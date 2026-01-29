@@ -3,11 +3,14 @@ import ctypes
 
 class StatArray:
     def __init__(self, py_list):
+        if not py_list:
+            raise ValueError("StatArray cannot be empty")
         self.size = len(py_list)
         self.py_list = py_list
         self._mean = None
         self._std = None
         self._variance = None
+        self._median = None
         self._stats_ptr = None
     
     def _compute(self):
@@ -18,6 +21,7 @@ class StatArray:
                 self._mean = self._stats_ptr.contents.mean
                 self._std = self._stats_ptr.contents.standard_deviation
                 self._variance = self._stats_ptr.contents.variance
+                self._median = self._stats_ptr.contents.median
 
     @property
     def mean(self):
@@ -33,6 +37,11 @@ class StatArray:
     def variance(self):
         self._compute()
         return self._variance
+    
+    @property
+    def median(self):
+        self._compute()
+        return self._median
     
     def __enter__(self):
         self._compute()
