@@ -8,6 +8,7 @@ extern "C" {
     struct StatResult {
         double mean;
         double standard_deviation;
+        double variance;
     };
 
     StatResult* calculate_stats(double* arr, int size) {
@@ -27,6 +28,7 @@ extern "C" {
         StatResult* res = new StatResult;
         res->mean = mean;
         res->standard_deviation = standard_deviation;
+        res->variance = standard_deviation*standard_deviation;
         return res;
     }
 
