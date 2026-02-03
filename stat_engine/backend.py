@@ -9,12 +9,14 @@ try:
 except FileNotFoundError:
     raise RuntimeError(f"Library not found at {dll_path}")
 
-class C_StatResult(ctypes.Structure):
-    _fields_ = [('mean', ctypes.c_double), ('standard_deviation', ctypes.c_double), ('variance', ctypes.c_double), ('median', ctypes.c_double)]
+mean = lib.mean
+mean.argtypes = [ctypes.POINTER(ctypes.c_double), ctypes.c_int]
+mean.restype = ctypes.c_double
 
-calculate_stats = lib.calculate_stats
-calculate_stats.argtypes = [ctypes.POINTER(ctypes.c_double), ctypes.c_int]
-calculate_stats.restype = ctypes.POINTER(C_StatResult)
+ssd = lib.ssd
+ssd.argtypes = [ctypes.POINTER(ctypes.c_double), ctypes.c_int, ctypes.c_double]
+ssd.restype = ctypes.c_double
 
-delete_StatResult = lib.delete_StatResult
-delete_StatResult.argtypes = [ctypes.POINTER(C_StatResult)]
+median = lib.median
+median.argtypes = [ctypes.POINTER(ctypes.c_double), ctypes.c_int]
+median.restype = ctypes.c_double
