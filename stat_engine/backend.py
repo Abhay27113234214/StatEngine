@@ -13,9 +13,9 @@ mean = lib.mean
 mean.argtypes = [ctypes.POINTER(ctypes.c_double), ctypes.c_int]
 mean.restype = ctypes.c_double
 
-ssd = lib.ssd
-ssd.argtypes = [ctypes.POINTER(ctypes.c_double), ctypes.c_int, ctypes.c_double]
-ssd.restype = ctypes.c_double
+calculate_moment = lib.calculate_moment
+calculate_moment.argtypes = [ctypes.POINTER(ctypes.c_double), ctypes.c_int, ctypes.c_int, ctypes.c_double]
+calculate_moment.restype = ctypes.c_double
 
 median = lib.median
 median.argtypes = [ctypes.POINTER(ctypes.c_double), ctypes.c_int]

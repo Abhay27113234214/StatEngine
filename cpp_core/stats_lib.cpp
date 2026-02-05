@@ -6,6 +6,27 @@ using namespace std;
 
 extern "C" {
 
+    double calculate_moment(double* arr, int size, int power, double mean) {
+        if (size <= 0 || arr == nullptr) {
+            return NAN;
+        }
+        double power_sum = 0.0;
+        if (power == 0) {
+            return 1.0;
+        } else if (power == 1) {
+            return 0;
+        } else if (power == 2) {
+            for (int i = 0; i < size; i++) {
+                power_sum += (arr[i] - mean)*(arr[i] - mean);
+            }
+        } else {
+            for (int i = 0; i < size; i++) {
+                power_sum += pow((arr[i] - mean), power);
+            }
+        }
+        return power_sum / size;
+    }
+
     double mean(double* arr, int size) {
         if (size <= 0 || arr == nullptr) {
             return NAN;
@@ -16,17 +37,6 @@ extern "C" {
         }
         double mean = sum / size;
         return mean;
-    }
-
-    double ssd(double* arr, int size, double mean) {
-        if (size <= 0 || arr == nullptr) {
-            return NAN;
-        }
-        double squared_diff = 0.0;
-        for (int i = 0; i < size; i++) {
-            squared_diff += (mean - arr[i]) * (mean - arr[i]);
-        }
-        return squared_diff;
     }
 
     double median(double* arr, int size) {
