@@ -1,0 +1,5 @@
+.vscode
+**/test.py
+pybind11/
+**/build.bat
+staty/
