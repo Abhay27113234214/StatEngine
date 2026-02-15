@@ -2,6 +2,7 @@
 #include <vector>
 #include "StatArray.h"
 #include <cmath>
+#include <algorithm>
 
 using std::vector;
 
@@ -18,18 +19,34 @@ size_t StatArray::getSize() const{
     return this->arr.size();
 }
 
-double& StatArray::operator[](size_t index) {
-    if (index >= this->arr.size() || index < 0) {
-        throw std::out_of_range("Out of bounds access");
+double& StatArray::operator[](int index) {
+    int n = static_cast<int>(this->arr.size());
+    if (index >= 0) {
+        if (index >= n) {
+            throw std::out_of_range("Out of bounds access");
+        }
+        return this->arr[index];
+    } else {
+        if (index < -1*n) {
+            throw std::out_of_range("Out of bounds access");
+        }
+        return this->arr[n+index];
     }
-    return this->arr[index];
 }
 
-double StatArray::operator[](size_t index) const{
-    if (index >= this->arr.size() || index < 0) {
-        throw std::out_of_range("Out of bounds access");
+double StatArray::operator[](int index) const{
+    int n = static_cast<int>(this->arr.size());
+    if (index >= 0) {
+        if (index >= n) {
+            throw std::out_of_range("Out of bounds access");
+        }
+        return this->arr[index];
+    } else {
+        if (index < -1*n) {
+            throw std::out_of_range("Out of bounds access");
+        }
+        return this->arr[n+index];
     }
-    return this->arr[index];
 }
 
 double StatArray::mean(bool re_calculate) {
@@ -42,6 +59,22 @@ double StatArray::mean(bool re_calculate) {
     }
     this->mean_ = sum / this->arr.size();
     return mean_;
+}
+
+double StatArray::median() {
+    int n = this->arr.size();
+    if (n <= 0) {
+        return NAN;
+    }
+    vector<double> temp(this->arr.begin(), this->arr.end());
+    sort(temp.begin(), temp.end());
+    double median;
+    if (n % 2 == 0) {
+        median = (temp[(n-1)/2] + temp[n/2])/2;
+    } else {
+        median = temp[n/2];
+    }
+    return median;
 }
 
 double StatArray::calculate_moment(int power) {

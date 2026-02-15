@@ -20,22 +20,17 @@ PYBIND11_MODULE(stats, m, py::mod_gil_not_used()) {
             }
             return res;
         })
-        .def("__getitem__", [](const StatArray& arr, size_t index) -> double {
-            if (index >= arr.getSize() || index < 0) {
-                throw py::index_error();
-            }
+        .def("__getitem__", [](const StatArray& arr, int index) -> double {
             return arr[index];
         })
-        .def("__setitem__", [](StatArray& arr, size_t index, double val) {
-            if (index >= arr.getSize() || index < 0) {
-                throw py::index_error();
-            }
+        .def("__setitem__", [](StatArray& arr, int index, double val) {
             arr[index] = val;
             arr.invalidate_cache();
         })
         .def("mean", &StatArray::mean)
         .def("std", &StatArray::std, py::arg("ddof") = 0)
         .def("var", &StatArray::variance, py::arg("ddof") = 0)
+        .def("median", &StatArray::median)
         .def("skew", &StatArray::skew, py::arg("bias") = true)
         .def("kurtosis", &StatArray::kurtosis, py::arg("bias") = true);
 }

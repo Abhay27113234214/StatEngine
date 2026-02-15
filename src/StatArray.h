@@ -21,15 +21,17 @@ class StatArray {
 
         size_t getSize() const;
 
-        double operator[](size_t index) const;
+        double operator[](int index) const;
 
-        double& operator[](size_t index);
+        double& operator[](int index);
 
         double mean(bool re_calculate = false);
 
         double std(int ddof = 0);
 
         double variance(int ddof = 0);
+
+        double median();
 
         double skew(bool bias = true);
 
