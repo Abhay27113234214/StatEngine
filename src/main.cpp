@@ -7,12 +7,13 @@ namespace py = pybind11;
 using std::vector;
 using std::string;
 
-PYBIND11_MODULE(stats, m, py::mod_gil_not_used()) {
-    py::class_<StatArray>(m, "StatArray")
-        .def(py::init<const vector<double>&>())
-        .def("append", &StatArray::append)
-        .def_property_readonly("size", &StatArray::getSize)
-        .def("__repr__", [](const StatArray& arr) -> string {
+template <typename t>
+void bind_class(py::module_& m, const char* class_name) {
+    py::class_<StatArray<t>>(m, class_name)
+        .def(py::init<const vector<t>&>())
+        .def("append", &StatArray<t>::append)
+        .def_property_readonly("size", &StatArray<t>::getSize, py::return_value_policy::reference_internal)
+        .def("__repr__", [](const StatArray<t>& arr) -> string {
             string res = "";
             for (size_t i = 0; i < arr.getSize(); i++) {
                 string num = std::to_string(arr[i]);
@@ -20,17 +21,42 @@ PYBIND11_MODULE(stats, m, py::mod_gil_not_used()) {
             }
             return res;
         })
-        .def("__getitem__", [](const StatArray& arr, int index) -> double {
+        .def("__getitem__", [](const StatArray<t>& arr, int index) -> t {
             return arr[index];
         })
-        .def("__setitem__", [](StatArray& arr, int index, double val) {
+        .def("__setitem__", [](StatArray<t>& arr, int index, double val) {
             arr[index] = val;
             arr.invalidate_cache();
         })
-        .def("mean", &StatArray::mean)
-        .def("std", &StatArray::std, py::arg("ddof") = 0)
-        .def("var", &StatArray::variance, py::arg("ddof") = 0)
-        .def("median", &StatArray::median)
-        .def("skew", &StatArray::skew, py::arg("bias") = true)
-        .def("kurtosis", &StatArray::kurtosis, py::arg("bias") = true);
+        .def("__len__", [](StatArray<t>& arr) {
+            return arr.getSize();
+        })
+        .def("mean", &StatArray<t>::mean, py::arg("re_calculate") = false)
+        .def("std", &StatArray<t>::std, py::arg("ddof") = 0)
+        .def("var", &StatArray<t>::variance, py::arg("ddof") = 0)
+        .def("median", &StatArray<t>::median)
+        .def("skew", &StatArray<t>::skew, py::arg("bias") = true)
+        .def("kurtosis", &StatArray<t>::kurtosis, py::arg("bias") = true);
 }
+
+py::object StatArray_factory(const py::list& ls) {
+    bool decimal = false;
+    for (auto i : ls) {
+        if (py::isinstance<py::float_>(i)) {
+            decimal = true;
+            break;
+        }
+    }
+    if (decimal) {
+        StatArray<double>* st = new StatArray<double>(ls.cast<vector<double>>());
+        return py::cast(st);   
+    }
+    StatArray<int>* st = new StatArray<int>(ls.cast<vector<int>>());
+    return py::cast(st);
+}
+
+PYBIND11_MODULE(stats, m, py::mod_gil_not_used()) {
+    bind_class<int>(m, "_StatArrayInt");
+    bind_class<double>(m, "_StatArrayDouble");
+    m.def("StatArray", &StatArray_factory, py::return_value_policy::take_ownership);
+}   

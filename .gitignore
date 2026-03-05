@@ -1,5 +1,7 @@
 .vscode
 **/test.py
+**/test.*
 pybind11/
 **/build.bat
 staty/
+**/build_test.bat

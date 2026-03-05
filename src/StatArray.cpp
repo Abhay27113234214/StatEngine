@@ -6,20 +6,28 @@
 
 using std::vector;
 
-StatArray::StatArray(const vector<double>& vec) : arr(vec), mean_(NAN) {};
+template<typename T>
+StatArray<T>::StatArray(const vector<T>& vec) : arr(vec), mean_(NAN) {};
 
-void StatArray::invalidate_cache() { this->mean_ = NAN; }
+template<typename T>
+StatArray<T>::StatArray(int number_of_elements) : arr(number_of_elements, 0), mean_(NAN) {};
 
-void StatArray::append(double val) {
+template<typename T>
+void StatArray<T>::invalidate_cache() { this->mean_ = NAN; }
+
+template<typename T>
+void StatArray<T>::append(T val) {
     this->arr.push_back(val);
     this->invalidate_cache();
 }
 
-size_t StatArray::getSize() const{
+template<typename T>
+size_t StatArray<T>::getSize() const{
     return this->arr.size();
 }
 
-double& StatArray::operator[](int index) {
+template<typename T>
+T& StatArray<T>::operator[](int index) {
     int n = static_cast<int>(this->arr.size());
     if (index >= 0) {
         if (index >= n) {
@@ -34,7 +42,8 @@ double& StatArray::operator[](int index) {
     }
 }
 
-double StatArray::operator[](int index) const{
+template<typename T>
+T StatArray<T>::operator[](int index) const{
     int n = static_cast<int>(this->arr.size());
     if (index >= 0) {
         if (index >= n) {
@@ -49,7 +58,8 @@ double StatArray::operator[](int index) const{
     }
 }
 
-double StatArray::mean(bool re_calculate) {
+template<typename T>
+double StatArray<T>::mean(bool re_calculate) {
     if (!re_calculate && !std::isnan(this->mean_)) {
         return this->mean_;
     }
@@ -61,7 +71,8 @@ double StatArray::mean(bool re_calculate) {
     return mean_;
 }
 
-double StatArray::median() {
+template<typename T>
+double StatArray<T>::median() {
     int n = this->arr.size();
     if (n <= 0) {
         return NAN;
@@ -77,7 +88,8 @@ double StatArray::median() {
     return median;
 }
 
-double StatArray::calculate_moment(int power) {
+template<typename T>
+double StatArray<T>::calculate_moment(int power) {
     if (std::isnan(this->mean_)) {
         this->mean();
     }
@@ -98,17 +110,20 @@ double StatArray::calculate_moment(int power) {
     return power_sum;
 }
 
-double StatArray::std(int ddof) {
+template<typename T>
+double StatArray<T>::std(int ddof) {
     double moment = this->calculate_moment(2);
     return sqrt(moment/(this->arr.size() - ddof));
 }
 
-double StatArray::variance(int ddof) {
+template<typename T>
+double StatArray<T>::variance(int ddof) {
     double moment = this->calculate_moment(2);
     return (moment/(this->arr.size() - ddof));
 }
 
-double StatArray::skew(bool bias) {
+template<typename T>
+double StatArray<T>::skew(bool bias) {
     int n = this->arr.size();
     double moment_3rd = this->calculate_moment(3)/n;
     double moment_2nd = this->calculate_moment(2)/n;
@@ -120,7 +135,8 @@ double StatArray::skew(bool bias) {
     return skewness;
 }
 
-double StatArray::kurtosis(bool bias) {
+template<typename T>
+double StatArray<T>::kurtosis(bool bias) {
     int n = this->arr.size();
     double moment_4th = this->calculate_moment(4) / n;
     double moment_2nd = this->calculate_moment(2) / n;
@@ -130,4 +146,8 @@ double StatArray::kurtosis(bool bias) {
         kurt = ((n-1.0)/((n-2.0)*(n-3.0)))*((n+1.0)*kurt + 6.0);
     }
     return kurt;
-}   
+}
+
+// explicit instantiation directives 
+template class StatArray<int>;
+template class StatArray<double>;

@@ -4,26 +4,29 @@
 
 using std::vector;
 
+template<typename T>
 class StatArray {
     private:
-        vector<double> arr;
+        vector<T> arr;
         double mean_;
 
         // helpers
         double calculate_moment(int power);
 
     public:
-        StatArray(const vector<double>& vec);
+        StatArray(const vector<T>& vec);
+
+        StatArray(int number_of_elements);
 
         void invalidate_cache();
 
-        void append(double val);
+        void append(T val);
 
         size_t getSize() const;
 
-        double operator[](int index) const;
+        T operator[](int index) const;
 
-        double& operator[](int index);
+        T& operator[](int index);
 
         double mean(bool re_calculate = false);
 
