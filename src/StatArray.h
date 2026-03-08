@@ -7,20 +7,22 @@ using std::vector;
 template<typename T>
 class StatArray {
     private:
-        vector<T> arr;
-        double mean_;
+        size_t size;
+        bool owns_memory;
+        T* m_data;
+        mutable double mean_;
 
         // helpers
         double calculate_moment(int power);
 
     public:
-        StatArray(const vector<T>& vec);
-
         StatArray(int number_of_elements);
 
-        void invalidate_cache();
+        StatArray(T* data, size_t size, bool owns_memory);
 
-        void append(T val);
+        StatArray(const StatArray<T>& st);
+
+        void invalidate_cache();
 
         size_t getSize() const;
 
@@ -28,7 +30,7 @@ class StatArray {
 
         T& operator[](int index);
 
-        double mean(bool re_calculate = false);
+        double mean(bool re_calculate = false) const;
 
         double std(int ddof = 0);
 
@@ -39,6 +41,12 @@ class StatArray {
         double skew(bool bias = true);
 
         double kurtosis(bool bias = true);
+
+        T* _data();
+
+        const T* _data() const;
+
+        ~StatArray();
 };
 
 
