@@ -99,6 +99,7 @@ double StatArray<T>::median() { // isme changes karne padenge
     } else {
         median = temp[n/2];
     }
+    delete[] temp;
     return median;
 }
 
