@@ -16,6 +16,15 @@ void bind_class(py::module_& m, const char* class_name) {
             py::buffer_info info = np_arr.request();
             return new StatArray<t>(static_cast<t*>(info.ptr), info.size, false);
         }), py::return_value_policy::take_ownership, py::keep_alive<0, 1>())
+        .def("copy", [](const StatArray<t>& self) {
+            return new StatArray<t>(self); 
+        }, py::return_value_policy::take_ownership)
+        .def("__copy__", [](const StatArray<t>& self) {
+            return new StatArray<t>(self);
+        }, py::return_value_policy::take_ownership)
+        .def("__deepcopy__", [](const StatArray<t>& self, py::dict) {
+            return new StatArray<t>(self);
+        }, py::return_value_policy::take_ownership)
         .def_property_readonly("size", &StatArray<t>::getSize, py::return_value_policy::reference_internal)
         .def("__repr__", [](const StatArray<t>& arr) -> string {
             string res = "";
