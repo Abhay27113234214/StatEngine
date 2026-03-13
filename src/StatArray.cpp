@@ -85,7 +85,7 @@ double StatArray<T>::mean(bool re_calculate) const {
 }
 
 template<typename T>
-double StatArray<T>::median() { // isme changes karne padenge 
+double StatArray<T>::median() { 
     int n = this->size;
     if (n <= 0) {
         return NAN;

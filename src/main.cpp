@@ -44,6 +44,153 @@ void bind_class(py::module_& m, const char* class_name) {
         .def("__len__", [](StatArray<t>& arr) {
             return arr.getSize();
         })
+        .def("__add__", [](StatArray<t>& self, const StatArray<int>& other) {
+            return self + other;
+        }, py::return_value_policy::take_ownership)
+        .def("__add__", [](StatArray<t>& self, const StatArray<double>& other) {
+            return self + other;
+        }, py::return_value_policy::take_ownership)
+        .def("__add__", [](StatArray<t>& self, const StatArray<long long>& other) {
+            return self + other;
+        }, py::return_value_policy::take_ownership)
+        .def("__add__", [](StatArray<t>& self, int value) {
+            return self + value;
+        }, py::return_value_policy::take_ownership)
+        .def("__add__", [](StatArray<t>& self, double value) {
+            return self + value;
+        }, py::return_value_policy::take_ownership)
+        .def("__add__", [](StatArray<t>& self, long long value) {
+            return self + value;
+        }, py::return_value_policy::take_ownership)
+        .def("__iadd__", [](StatArray<t>& self, const StatArray<int>& other) {
+            return self += other;
+        }, py::return_value_policy::reference_internal)
+        .def("__iadd__", [](StatArray<t>& self, const StatArray<double>& other) {
+            return self += other;
+        }, py::return_value_policy::reference_internal)
+        .def("__iadd__", [](StatArray<t>& self, const StatArray<long long>& other) {
+            return self += other;
+        }, py::return_value_policy::reference_internal)
+        .def("__iadd__", [](StatArray<t>& self, const int& value) {
+            return self += value;
+        }, py::return_value_policy::reference_internal)
+        .def("__iadd__", [](StatArray<t>& self, const double& value) {
+            return self += value;
+        }, py::return_value_policy::reference_internal)
+        .def("__iadd__", [](StatArray<t>& self, const long long& value) {
+            return self += value;
+        }, py::return_value_policy::reference_internal)
+        .def("__sub__", [](StatArray<t>& self, const StatArray<int>& other) {
+            return self - other;
+        }, py::return_value_policy::take_ownership)
+        .def("__sub__", [](StatArray<t>& self, const StatArray<double>& other) {
+            return self - other;
+        }, py::return_value_policy::take_ownership)
+        .def("__sub__", [](StatArray<t>& self, const StatArray<long long>& other) {
+            return self - other;
+        }, py::return_value_policy::take_ownership)
+        .def("__sub__", [](StatArray<t>& self, int val) {
+            return self - val;
+        }, py::return_value_policy::take_ownership)
+        .def("__sub__", [](StatArray<t>& self, double val) {
+            return self - val;
+        }, py::return_value_policy::take_ownership)
+        .def("__sub__", [](StatArray<t>& self, long long val) {
+            return self - val;
+        }, py::return_value_policy::take_ownership)
+        .def("__isub__", [](StatArray<t>& self, const StatArray<int>& other) {
+            return self -= other;
+        }, py::return_value_policy::reference_internal)
+        .def("__isub__", [](StatArray<t>& self, const StatArray<double>& other) {
+            return self -= other;
+        }, py::return_value_policy::reference_internal)
+        .def("__isub__", [](StatArray<t>& self, const StatArray<long long>& other) {
+            return self -= other;
+        }, py::return_value_policy::reference_internal)
+        .def("__isub__", [](StatArray<t>& self, const int& value) {
+            return self -= value;
+        }, py::return_value_policy::reference_internal)
+        .def("__isub__", [](StatArray<t>& self, const double& value) {
+            return self -= value;
+        }, py::return_value_policy::reference_internal)
+        .def("__isub__", [](StatArray<t>& self, const long long& value) {
+            return self -= value;
+        }, py::return_value_policy::reference_internal)
+        .def("__mul__", [](StatArray<t>& self, const StatArray<int>& other) {
+            return self * other;
+        }, py::return_value_policy::take_ownership)
+        .def("__mul__", [](StatArray<t>& self, const StatArray<double>& other) {
+        return self * other;
+        }, py::return_value_policy::take_ownership)
+        .def("__mul__", [](StatArray<t>& self, const StatArray<long long>& other) {
+            return self * other;
+        }, py::return_value_policy::take_ownership)
+        .def("__mul__", [](StatArray<t>& self, int val) {
+            return self * val;
+        }, py::return_value_policy::take_ownership)
+        .def("__mul__", [](StatArray<t>& self, double val) {
+            return self * val;
+        }, py::return_value_policy::take_ownership)
+        .def("__mul__", [](StatArray<t>& self, long long val) {
+            return self * val;
+        }, py::return_value_policy::take_ownership)
+        .def("__imul__", [](StatArray<t>& self, const StatArray<int>& other) {
+            return self *= other;
+        }, py::return_value_policy::reference_internal)
+        .def("__imul__", [](StatArray<t>& self, const StatArray<double>& other) {
+            return self *= other;
+        }, py::return_value_policy::reference_internal)
+        .def("__imul__", [](StatArray<t>& self, const StatArray<long long>& other) {
+            return self *= other;
+        }, py::return_value_policy::reference_internal)
+        .def("__imul__", [](StatArray<t>& self, const int& value) {
+            return self *= value;
+        }, py::return_value_policy::reference_internal)
+        .def("__imul__", [](StatArray<t>& self, const double& value) {
+            return self *= value;
+        }, py::return_value_policy::reference_internal)
+        .def("__imul__", [](StatArray<t>& self, const long long& value) {
+            return self *= value;
+        }, py::return_value_policy::reference_internal)
+        .def("__truediv__", [](StatArray<t>& self, const StatArray<int>& other) {
+            return self / other;
+        }, py::return_value_policy::take_ownership)
+        .def("__truediv__", [](StatArray<t>& self, const StatArray<double>& other) {
+        return self / other;
+        }, py::return_value_policy::take_ownership)
+        .def("__truediv__", [](StatArray<t>& self, const StatArray<long long>& other) {
+            return self / other;
+        }, py::return_value_policy::take_ownership)
+        .def("__truediv__", [](StatArray<t>& self, int val) {
+            return self / val;
+        }, py::return_value_policy::take_ownership)
+        .def("__truediv__", [](StatArray<t>& self, double val) {
+            return self / val;
+        }, py::return_value_policy::take_ownership)
+        .def("__truediv__", [](StatArray<t>& self, long long val) {
+            return self / val;
+        }, py::return_value_policy::take_ownership)
+        .def("__itruediv__", [](StatArray<t>& self, const StatArray<int>& other) {
+            return self /= other;
+        }, py::return_value_policy::reference_internal)
+        .def("__itruediv__", [](StatArray<t>& self, const StatArray<double>& other) {
+            return self /= other;
+        }, py::return_value_policy::reference_internal)
+        .def("__itruediv__", [](StatArray<t>& self, const StatArray<long long>& other) {
+            return self /= other;
+        }, py::return_value_policy::reference_internal)
+        .def("__itruediv__", [](StatArray<t>& self, const int& value) {
+            return self /= value;
+        }, py::return_value_policy::reference_internal)
+        .def("__itruediv__", [](StatArray<t>& self, const double& value) {
+            return self /= value;
+        }, py::return_value_policy::reference_internal)
+        .def("__itruediv__", [](StatArray<t>& self, const long long& value) {
+            return self /= value;
+        }, py::return_value_policy::reference_internal)
+        .def("__neg__", [](StatArray<t>& self) {
+            return self * -1;
+        }, py::return_value_policy::take_ownership)
         .def("mean", &StatArray<t>::mean, py::arg("re_calculate") = false)
         .def("std", &StatArray<t>::std, py::arg("ddof") = 0)
         .def("var", &StatArray<t>::variance, py::arg("ddof") = 0)
