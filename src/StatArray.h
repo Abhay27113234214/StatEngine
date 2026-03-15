@@ -1,9 +1,6 @@
 #ifndef STATARRAY_H
 #define STATARRAY_H
-#include <vector>
 #include <type_traits>
-
-using std::vector;
 
 template<typename T>
 class StatArray {

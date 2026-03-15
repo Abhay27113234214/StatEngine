@@ -1,11 +1,8 @@
-#include <iostream>
-#include <vector>
+#include <stdexcept>
 #include "StatArray.h"
 #include <cmath>
 #include <algorithm>
 #include <cstring>
-
-using std::vector;
 
 template<typename T>
 StatArray<T>::StatArray(int number_of_elements) : mean_(NAN) {
