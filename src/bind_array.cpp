@@ -249,8 +249,12 @@ py::object StatArray_factory_list(const py::list& ls) {
 
 template<typename t>
 py::object StatArray_factory_buffer(const py::array_t<t>& np_arr) {
-    void* ptr = np_arr.request().ptr;
-    size_t size = np_arr.request().size;
+    py::buffer_info info = np_arr.request();
+    void* ptr = info.ptr;
+    if (info.readonly) {
+        throw std::invalid_argument("StatEngine cannot take ownership of a read-only NumPy array!");
+    }
+    size_t size = info.size;
     if (np_arr.dtype().is(py::dtype::of<int>())) {
         StatArray<int>* arr = new StatArray<int>(static_cast<int*>(ptr), size, false);
         return py::cast(arr);

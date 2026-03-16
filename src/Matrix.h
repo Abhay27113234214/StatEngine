@@ -25,6 +25,10 @@ class Matrix{
 
         size_t cols() const;
 
+        T operator[](int index) const;
+
+        T& operator[](int index);
+
         const T* data() const;
         
         T* data();

@@ -5,7 +5,7 @@ template<typename T>
 Matrix<T>::Matrix(size_t rows, size_t cols) {
     this->m_rows = rows;
     this->m_cols = cols;
-    this->m_data = new T[this->m_cols * this->m_rows];
+    this->m_data = new T[this->m_cols * this->m_rows]{0};
     this->owns_memory = true;
 }
 
@@ -45,6 +45,24 @@ size_t Matrix<T>::rows() const {
 template<typename T>
 size_t Matrix<T>::cols() const {
     return this->m_cols;
+}
+
+template<typename T>
+T Matrix<T>::operator[](int index) const {
+    int size = static_cast<int>(this->size());
+    if (index < 0 || index > size) {
+        throw std::out_of_range("Out of bounds access!");
+    }
+    return this->m_data[index];
+}
+
+template<typename T>
+T& Matrix<T>::operator[](int index) {
+    int size = static_cast<int>(this->size());
+    if (index < 0 || index > size) {
+        throw std::out_of_range("Out of bounds access!");
+    }
+    return this->m_data[index];
 }
 
 template<typename T>
