@@ -66,6 +66,158 @@ void bind_class_matrix(py::module_ m, const char* class_name) {
             self[i*self_c+j] = value;
         })
         .def_property_readonly("size", &Matrix<T>::size, py::return_value_policy::reference_internal)
+        .def("__add__", [](const Matrix<T>& self, int value) {
+            return self + value;
+        }, py::return_value_policy::take_ownership)
+        .def("__add__", [](const Matrix<T>& self, double value) {
+            return self + value;
+        }, py::return_value_policy::take_ownership)
+        .def("__add__", [](const Matrix<T>& self, long long value) {
+            return self + value;
+        }, py::return_value_policy::take_ownership)
+        .def("__add__", [](const Matrix<T>& self, const Matrix<int>& other) {
+            return self + other;
+        }, py::return_value_policy::take_ownership)
+        .def("__add__", [](const Matrix<T>& self, const Matrix<double>& other) {
+            return self + other;
+        }, py::return_value_policy::take_ownership)
+        .def("__add__", [](const Matrix<T>& self, const Matrix<long long>& other) {
+            return self + other;
+        }, py::return_value_policy::take_ownership)
+        // -------------------------------------------------------------------------------
+        .def("__iadd__", [](Matrix<T>& self, int value) {
+            return self += value;
+        }, py::return_value_policy::reference_internal)
+        .def("__iadd__", [](Matrix<T>& self, double value) {
+            return self += value;
+        }, py::return_value_policy::reference_internal)
+        .def("__iadd__", [](Matrix<T>& self, long long value) {
+            return self += value;
+        }, py::return_value_policy::reference_internal)
+        .def("__iadd__", [](Matrix<T>& self, const Matrix<int>& other) {
+            return self += other;
+        }, py::return_value_policy::reference_internal)
+        .def("__iadd__", [](Matrix<T>& self, const Matrix<double>& other) {
+            return self += other;
+        }, py::return_value_policy::reference_internal)
+        .def("__iadd__", [](Matrix<T>& self, const Matrix<long long>& other) {
+            return self += other;
+        }, py::return_value_policy::reference_internal)
+        // -------------------------------------------------------------------------------
+        .def("__sub__", [](const Matrix<T>& self, int value) {
+            return self - value;
+        }, py::return_value_policy::take_ownership)
+        .def("__sub__", [](const Matrix<T>& self, double value) {
+            return self - value;
+        }, py::return_value_policy::take_ownership)
+        .def("__sub__", [](const Matrix<T>& self, long long value) {
+            return self - value;
+        }, py::return_value_policy::take_ownership)
+        .def("__sub__", [](const Matrix<T>& self, const Matrix<int>& other) {
+            return self - other;
+        }, py::return_value_policy::take_ownership)
+        .def("__sub__", [](const Matrix<T>& self, const Matrix<double>& other) {
+            return self - other;
+        }, py::return_value_policy::take_ownership)
+        .def("__sub__", [](const Matrix<T>& self, const Matrix<long long>& other) {
+            return self - other;
+        }, py::return_value_policy::take_ownership)
+        // -------------------------------------------------------------------------------
+        .def("__isub__", [](Matrix<T>& self, int value) {
+            return self -= value;
+        }, py::return_value_policy::reference_internal)
+        .def("__isub__", [](Matrix<T>& self, double value) {
+            return self -= value;
+        }, py::return_value_policy::reference_internal)
+        .def("__isub__", [](Matrix<T>& self, long long value) {
+            return self -= value;
+        }, py::return_value_policy::reference_internal)
+        .def("__isub__", [](Matrix<T>& self, const Matrix<int>& other) {
+            return self -= other;
+        }, py::return_value_policy::reference_internal)
+        .def("__isub__", [](Matrix<T>& self, const Matrix<double>& other) {
+            return self -= other;
+        }, py::return_value_policy::reference_internal)
+        .def("__isub__", [](Matrix<T>& self, const Matrix<long long>& other) {
+            return self -= other;
+        }, py::return_value_policy::reference_internal)
+        // -------------------------------------------------------------------------------
+        .def("__mul__", [](const Matrix<T>& self, int value) {
+            return self * value;
+        }, py::return_value_policy::take_ownership)
+        .def("__mul__", [](const Matrix<T>& self, double value) {
+            return self * value;
+        }, py::return_value_policy::take_ownership)
+        .def("__mul__", [](const Matrix<T>& self, long long value) {
+            return self * value;
+        }, py::return_value_policy::take_ownership)
+        .def("__mul__", [](const Matrix<T>& self, const Matrix<int>& other) {
+            return self * other;
+        }, py::return_value_policy::take_ownership)
+        .def("__mul__", [](const Matrix<T>& self, const Matrix<double>& other) {
+            return self * other;
+        }, py::return_value_policy::take_ownership)
+        .def("__mul__", [](const Matrix<T>& self, const Matrix<long long>& other) {
+            return self * other;
+        }, py::return_value_policy::take_ownership)
+        // -------------------------------------------------------------------------------
+        .def("__imul__", [](Matrix<T>& self, int value) {
+            return self *= value;
+        }, py::return_value_policy::reference_internal)
+        .def("__imul__", [](Matrix<T>& self, double value) {
+            return self *= value;
+        }, py::return_value_policy::reference_internal)
+        .def("__imul__", [](Matrix<T>& self, long long value) {
+            return self *= value;
+        }, py::return_value_policy::reference_internal)
+        .def("__imul__", [](Matrix<T>& self, const Matrix<int>& other) {
+            return self *= other;
+        }, py::return_value_policy::reference_internal)
+        .def("__imul__", [](Matrix<T>& self, const Matrix<double>& other) {
+            return self *= other;
+        }, py::return_value_policy::reference_internal)
+        .def("__imul__", [](Matrix<T>& self, const Matrix<long long>& other) {
+            return self *= other;
+        }, py::return_value_policy::reference_internal)
+        // -------------------------------------------------------------------------------
+        .def("__truediv__", [](const Matrix<T>& self, int value) {
+            return self / value;
+        }, py::return_value_policy::take_ownership)
+        .def("__truediv__", [](const Matrix<T>& self, double value) {
+            return self / value;
+        }, py::return_value_policy::take_ownership)
+        .def("__truediv__", [](const Matrix<T>& self, long long value) {
+            return self / value;
+        }, py::return_value_policy::take_ownership)
+        .def("__truediv__", [](const Matrix<T>& self, const Matrix<int>& other) {
+            return self / other;
+        }, py::return_value_policy::take_ownership)
+        .def("__truediv__", [](const Matrix<T>& self, const Matrix<double>& other) {
+            return self / other;
+        }, py::return_value_policy::take_ownership)
+        .def("__truediv__", [](const Matrix<T>& self, const Matrix<long long>& other) {
+            return self / other;
+        }, py::return_value_policy::take_ownership)
+        // -------------------------------------------------------------------------------
+        .def("__itruediv__", [](Matrix<T>& self, int value) {
+            return self /= value;
+        }, py::return_value_policy::reference_internal)
+        .def("__itruediv__", [](Matrix<T>& self, double value) {
+            return self /= value;
+        }, py::return_value_policy::reference_internal)
+        .def("__itruediv__", [](Matrix<T>& self, long long value) {
+            return self /= value;
+        }, py::return_value_policy::reference_internal)
+        .def("__itruediv__", [](Matrix<T>& self, const Matrix<int>& other) {
+            return self /= other;
+        }, py::return_value_policy::reference_internal)
+        .def("__itruediv__", [](Matrix<T>& self, const Matrix<double>& other) {
+            return self /= other;
+        }, py::return_value_policy::reference_internal)
+        .def("__itruediv__", [](Matrix<T>& self, const Matrix<long long>& other) {
+            return self /= other;
+        }, py::return_value_policy::reference_internal)
+        // -------------------------------------------------------------------------------
         .def_buffer([](Matrix<T>& m) -> py::buffer_info {
             return py::buffer_info(
                 m.data(),

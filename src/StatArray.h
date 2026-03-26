@@ -152,8 +152,8 @@ class StatArray {
         template<typename U>
         StatArray<T>& operator+=(const U& value) {
             using res_type = decltype(U() + T());
-            if (!std::is_same<T, res_type>::value) {
-                throw std::invalid_argument("The StatArrays are not of the same length!!");
+            if (!std::is_same<res_type, T>::value) {
+                throw std::invalid_argument("The datatypes don't match!!");
             }
             size_t self_s = this->getSize();
             for (size_t i = 0; i < self_s; i++) {

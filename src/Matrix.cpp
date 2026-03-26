@@ -50,7 +50,7 @@ size_t Matrix<T>::cols() const {
 template<typename T>
 T Matrix<T>::operator[](int index) const {
     int size = static_cast<int>(this->size());
-    if (index < 0 || index > size) {
+    if (index < 0 || index >= size) {
         throw std::out_of_range("Out of bounds access!");
     }
     return this->m_data[index];
@@ -59,7 +59,7 @@ T Matrix<T>::operator[](int index) const {
 template<typename T>
 T& Matrix<T>::operator[](int index) {
     int size = static_cast<int>(this->size());
-    if (index < 0 || index > size) {
+    if (index < 0 || index >= size) {
         throw std::out_of_range("Out of bounds access!");
     }
     return this->m_data[index];
