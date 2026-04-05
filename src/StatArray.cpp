@@ -160,6 +160,26 @@ double StatArray<T>::kurtosis(bool bias) {
     return kurt;
 }
 
+template<typename T>
+T* StatArray<T>::begin() {
+    return this->m_data;
+}
+
+template<typename T>
+T* StatArray<T>::end() {
+    return this->m_data + this->size;
+}
+
+template<typename T>
+const T* StatArray<T>::begin() const {
+    return this->m_data;
+}
+
+template<typename T>
+const T* StatArray<T>::end() const {
+    return this->m_data + this->size;
+}
+
 template<typename T> 
 T* StatArray<T>::_data() {
     return this->m_data;

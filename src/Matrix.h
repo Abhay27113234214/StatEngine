@@ -1,5 +1,7 @@
 #ifndef MATRIX_H
 #define MATRIX_H
+#include <vector>
+#include "StatArray.h"
 
 template<typename T>
 class Matrix{
@@ -276,6 +278,35 @@ class Matrix{
             }
             return *this;
         }
+
+        template<typename U>
+        auto dot(const Matrix<U>& other) const -> Matrix<decltype(T()*U() + T()*U())>* {
+            size_t s_row = this->rows();
+            size_t s_col = this->cols();
+            size_t o_row = other.rows();
+            size_t o_col = other.cols();
+            if (s_col != o_row) {
+                throw std::invalid_argument("The matrices are not compatible with each other!");
+            }
+            using restype = decltype(T()*U() + T()*U());
+            Matrix<restype>* res = new Matrix<restype>(s_row, o_col);
+            for (size_t i = 0; i < s_row; i++) {
+                for (size_t k = 0; k < s_col; k++) {
+                    for (size_t j = 0; j < o_col; j++) {
+                        (*res)[i*o_col + j] += this->m_data[i*s_col + k]*other[k*o_col + j];
+                    }
+                }
+            }
+            return res;
+        }
+
+        StatArray<double>* mean(int axis = 1) const;
+
+        StatArray<T>* sum(int axis = 1) const;
+
+        StatArray<double>* var(int axis = 1) const;
+
+        StatArray<double>* std(int axis = 1) const;
 
         const T* data() const;
         

@@ -1,5 +1,10 @@
 #include <stdexcept>
 #include "Matrix.h"
+#include <vector>
+#include "StatArray.h"
+#include <cmath>
+
+using std::vector;
 
 template<typename T>
 Matrix<T>::Matrix(size_t rows, size_t cols) {
@@ -76,13 +81,103 @@ const T* Matrix<T>::data() const {
 }
 
 template<typename T>
+StatArray<double>* Matrix<T>::mean(int axis) const{
+    size_t s_r = this->rows();
+    size_t s_c = this->cols();
+    if (axis == 1) {
+        StatArray<double>* res = new StatArray<double>(s_r);
+        for (size_t i = 0; i < s_r; i++) {
+            for (size_t j = 0; j < s_c; j++) {
+                (*res)[i] += this->m_data[i*s_c + j];
+            }
+            (*res)[i] = (*res)[i] / s_c;
+        }
+        return res;
+    } else if (axis == 0) {
+        StatArray<double>* res = new StatArray<double>(s_c);
+        for (size_t i = 0; i < s_c; i++) {
+            for (size_t j = 0; j < s_r; j++) {
+                (*res)[i] += this->m_data[j*s_c + i];
+            }
+            (*res)[i] = (*res)[i] / s_r;
+        }
+        return res;
+    } 
+    throw std::invalid_argument("Invalid value for the axis argument!");
+}
+
+template<typename T>
+StatArray<T>* Matrix<T>::sum(int axis) const {
+    size_t s_r = this->rows();
+    size_t s_c = this->cols();
+    if (axis == 1) {
+        StatArray<T>* res = new StatArray<T>(s_r);
+        for (size_t i = 0; i < s_r; i++) {
+            for (size_t j = 0; j < s_c; j++) {
+                (*res)[i] += this->m_data[i*s_c + j];
+            }
+        }
+        return res;
+    } else if (axis == 0) {
+        StatArray<T>* res = new StatArray<T>(s_c);
+        for (size_t i = 0; i < s_c; i++) {
+            for (size_t j = 0; j < s_r; j++) {
+                (*res)[i] += this->m_data[j*s_c + i];
+            }
+        }
+        return res;
+    }
+    throw std::invalid_argument("Invalid value for the axis argument!");
+}
+
+template<typename T>
+StatArray<double>* Matrix<T>::var(int axis) const {
+    size_t s_r = this->rows();
+    size_t s_c = this->cols();
+    StatArray<double>* means = this->mean(axis);
+    if (axis == 1) {
+        StatArray<double>* res = new StatArray<double>(s_r);
+        for (size_t i = 0; i < s_r; i++) {
+            for (size_t j = 0; j < s_c; j++) {
+                (*res)[i] += std::pow((this->m_data[i*s_c+j] - (*means)[i]), 2);
+            }
+            (*res)[i] = (*res)[i] / s_c;
+        }
+        return res;
+    } else if (axis == 0) {
+        StatArray<double>* res = new StatArray<double>(s_c);
+        for (size_t i = 0; i < s_c; i++) {
+            for (size_t j = 0; j < s_r; j++) {
+                (*res)[i] += std::pow((this->m_data[j*s_c+i] - (*means)[i]), 2);
+            }
+            (*res)[i] = (*res)[i] / s_r;
+        }
+        return res;
+    }
+    throw std::invalid_argument("Invalid value for the axis argument!");
+}
+
+template<typename T>
+StatArray<double>* Matrix<T>::std(int axis) const {
+    if (axis != 1 || axis != 0) {
+        throw std::invalid_argument("invalid value for the axis argument!");
+    }
+    StatArray<double>* vars = this->var(axis);
+    size_t size = vars->getSize();
+    StatArray<double>* res = new StatArray(size);
+    for (size_t i = 0; i < size; i++) {
+        (*res)[i] = std::pow((*vars)[i], (1/2));
+    }
+    return res;
+}
+
+template<typename T>
 Matrix<T>::~Matrix()  {
     if (this->owns_memory) {
         delete[] m_data;
     }
     this->owns_memory = false;
 }
-
 
 // explicit instantiation directives 
 template class Matrix<int>;

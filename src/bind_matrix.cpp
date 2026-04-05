@@ -218,6 +218,23 @@ void bind_class_matrix(py::module_ m, const char* class_name) {
             return self /= other;
         }, py::return_value_policy::reference_internal)
         // -------------------------------------------------------------------------------
+        // anytime you access a templated method or a templated variable of a class which is also a template, you must use the template keyword
+        .def("dot", &Matrix<T>::template dot<int>, py::return_value_policy::take_ownership)
+        .def("dot", &Matrix<T>::template dot<long long>, py::return_value_policy::take_ownership)
+        .def("dot", &Matrix<T>::template dot<double>, py::return_value_policy::take_ownership)
+        .def("__matmul__", [](const Matrix<T>& self, const Matrix<int>& other) {
+            return self.dot(other);
+        }, py::return_value_policy::take_ownership)
+        .def("__matmul__", [](const Matrix<T>& self, const Matrix<double>& other) {
+            return self.dot(other);
+        }, py::return_value_policy::take_ownership)
+        .def("__matmul__", [](const Matrix<T>& self, const Matrix<long long>& other) {
+            return self.dot(other);
+        }, py::return_value_policy::take_ownership)
+        .def("mean", &Matrix<T>::mean, py::arg("axis") = 1, py::return_value_policy::take_ownership)
+        .def("sum", &Matrix<T>::sum, py::arg("axis") = 1, py::return_value_policy::take_ownership)
+        .def("var", &Matrix<T>::var, py::arg("axis") = 1, py::return_value_policy::take_ownership)
+        .def("std", &Matrix<T>::std, py::arg("axis") = 1, py::return_value_policy::take_ownership)
         .def_buffer([](Matrix<T>& m) -> py::buffer_info {
             return py::buffer_info(
                 m.data(),

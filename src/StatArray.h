@@ -264,6 +264,14 @@ class StatArray {
 
         double kurtosis(bool bias = true);
 
+        T* begin();
+
+        T* end();
+
+        const T* begin() const;
+         
+        const T* end() const;
+
         T* _data();
 
         const T* _data() const;
